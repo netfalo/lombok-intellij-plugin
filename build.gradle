@@ -29,8 +29,8 @@ println "ArtifactVersion is : ${artifactVersion}"
 group = pluginGroup
 version = artifactVersion
 
-sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 tasks.withType(JavaCompile) {
   options.encoding = 'UTF-8'
@@ -49,7 +49,7 @@ sourceSets {
 }
 
 intellij {
-  version ideaVersion
+  version = ideaVersion
   println "Building for IntelliJ version: ${version}"
 
   //pluginName = pluginName
@@ -84,7 +84,7 @@ dependencies {
   lombok group: 'org.projectlombok', name: 'lombok', version: '1.18.18', classifier: 'sources', ext: 'jar'
 
   testImplementation("junit:junit:4.13.2")
-  testImplementation("org.mockito:mockito-core:3.8.0")
+  testImplementation("org.mockito:mockito-core:3.12.4")
   testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.7.1")
 }
 
@@ -155,6 +155,17 @@ test {
   beforeTest { descriptor ->
     logger.lifecycle("Running test: " + descriptor)
   }
+  jvmArgs = [
+    "--add-opens", "java.base/java.io=ALL-UNNAMED",
+    "--add-opens", "java.desktop/sun.awt=ALL-UNNAMED",
+    "--add-opens", "java.desktop/java.awt=ALL-UNNAMED",
+    "--add-opens", "java.desktop/java.awt.event=ALL-UNNAMED",
+    "--add-opens", "java.desktop/javax.swing=ALL-UNNAMED",
+    "--add-opens", "java.desktop/sun.font=ALL-UNNAMED",
+    "--add-opens", "java.desktop/javax.swing.plaf.basic=ALL-UNNAMED",
+    "--add-opens", "java.desktop/sun.swing=ALL-UNNAMED",
+    "--add-opens", "java.desktop/sun.awt.image=ALL-UNNAMED"
+  ]
 }
 
 runIde {
